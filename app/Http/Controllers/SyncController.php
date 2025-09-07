@@ -14,7 +14,7 @@ class SyncController extends Controller
     public function pull(Request $r) {
         $since = $r->query('updated_since'); // ISO8601 string from device
         $ts = $since ? Carbon::parse($since) : null;
-        $users = User::query()->withTrashed()
+        $users = User::query()
             ->when($ts, fn($q) => $q->where(function($qq) use ($ts) {
                 $qq->where('updated_at','>=',$ts)->orWhere('deleted_at','>=',$ts);
             }))->get();

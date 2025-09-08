@@ -16,7 +16,7 @@ class SyncController extends Controller
         $ts = $since ? Carbon::parse($since) : null;
         $users = User::query()
             ->when($ts, fn($q) => $q->where(function($qq) use ($ts) {
-                $qq->where('updated_at','>=',$ts)->orWhere('deleted_at','>=',$ts);
+                $qq->where('updated_at','>=',$ts);
             }))->get();
         $items = Item::withTrashed()
             ->when($ts, fn($q) => $q->where(function($qq) use ($ts) {
